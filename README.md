@@ -1,4 +1,7 @@
-intersection
+Intersection
 ============
 
 Facebook data visualization webapp
+
+
+
