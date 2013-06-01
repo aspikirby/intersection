@@ -1,0 +1,58 @@
+html, body {
+	height: 100%;
+}
+
+#sidebar, #visualisation {
+	height: 100%;
+}
+
+/* Sidebar */
+
+#sidebar {
+	float: left;
+	width: 300px;
+	padding: 0 5px;
+	background: #F0F0F0;
+	box-shadow: 0 2px 4px #444;
+}
+
+.draw {
+	padding-top: 200px;
+	position:relative;
+	margin-left:200px;
+	margin-right:auto;
+}
+
+#sidebar .fbuser {
+	margin: 40px 0	;
+	padding: 10px;
+	background: #CCC;
+	box-shadow: 1px 1px 4px #222;
+	overflow: auto;
+}
+
+#sidebar .graph {
+	width: 110px;
+	margin: 10px 0	;
+	padding: 10px;
+	background: #DCDCDC;
+	overflow: auto;
+}
+
+#sidebar .fbuser span {
+	width: 170px;
+}
+
+#sidebar .fbuser .firstname {
+	float: left;
+	font-size: 20px;
+	font-weight: bold;
+	text-transform: capitalize;
+}
+
+#sidebar .fbuser .lastname {
+	float: left;
+	font-size: 16px;
+	color: #555;
+	text-transform: uppercase;
+}
