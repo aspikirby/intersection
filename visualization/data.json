@@ -1,0 +1,106 @@
+{
+    "schema": [
+        {
+            "id": "1185884926", 
+            "name": "Lilian Canillas",
+            "first_name": "Lilian",
+            "last_name": "Canillas",
+            "link": "http://www.facebook.com/lilian.canillas",
+            "username": "lilian.canillas",
+            "gender": "male",
+            "email": "canillas.lilian@gmail.com",
+            "timezone": 2,
+            "locale": "fr_FR",
+            "verified": true,
+            "updated_time": "2012-10-23T19:13:06+0000",
+            "ami": [
+                {
+                    "id": "0001",
+                    "name": "Pieroooooe"
+                },
+                {
+                    "id": "0002",
+                    "name": "Paul"
+                },
+                {
+                    "id": "0003",
+                    "name": "Tutu"
+                },
+               
+                {
+                    "id": "0005",
+                    "name": "Robert"
+                },
+               {
+                    "id": "0099",
+                    "name": "Toto"
+                }
+            ]
+        },
+        {
+            "id": "1185884926",
+            "name": "azerty",
+            "first_name": "zaet",
+            "last_name": "dfg",
+            "link": "http://www.facebook.com/azert",
+            "username": "azer.azer",
+            "quotes": "ceci est une quote",
+            "gender": "male",
+            "email": "********@gmail.com",
+            "timezone": 2,
+            "locale": "fr_FR",
+            "verified": true,
+            "updated_time": "2012-10-23T19:13:06+0000",
+            "ami": [
+                {
+                    "id": "0007",
+                    "name": "A"
+                },
+                {
+                    "id": "0008",
+                    "name": "B"
+                },
+                {
+                    "id": "0009",
+                    "name": "C"
+                },
+                {
+                    "id": "0003",
+                    "name": "Tutu"
+                },
+                {
+                    "id": "0002",
+                    "name": "Paul"
+                },
+                {
+                    "id": "0001",
+                    "name": "Pieroooooore"
+                },
+                {
+                    "id": "0099",
+                    "name": "Toto"
+                }
+            ]
+        },
+        {
+            "ami": [
+                {
+                    "id": "0002",
+                    "name": "Paul"
+                },
+                {
+                    "id": "0001",
+                    "name": "Pieroooore"
+                },
+				  {
+                    "id": "0003",
+                    "name": "Tutu"
+                },
+				  {
+                    "id": "0099",
+                    "name": "Toto"
+                }
+            ]
+        }
+    ]
+}

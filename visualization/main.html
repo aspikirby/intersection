@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="reset.css" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<title>Graphe social</title>
+	</head>
+	<body>
+		<div id="sidebar">
+			<div class="fbuser" id="from">
+				<span class="firstname">Lilian</span>
+				<span class="lastname">Canillas</span>
+				<span class="id">ID : 03437281</span> 
+			</div>
+			<div class="fbuser" id="to">
+				<span class="firstname">Mathieu</span>
+				<span class="lastname">Petinot</span> 
+				<span class="id">ID : 513528635</span> 
+			</div>
+			<div class="graph">
+				<p>AMIS</p>
+			</div>
+			<input type="submit" name="Visualiser" />
+			<div class="graph">
+				<p>GROUPES</p>
+			</div>
+			<input type="submit" name="Visualiser" />
+			<div class="graph">
+				<p>EVENEMENTS</p>
+			</div>
+			<input type="submit" name="Visualiser" />
+		</div>
+		<div class="draw">
+			<script src="d3.v3.min.js"></script>
+			<script src="d3.v3.js"></script>
+			<script>
+		
+		var width = 800 ; 
+		var height = 400;
+								
+		var svg = d3.select(".draw").append("svg").attr("width", width).attr("height", height ) ; 
+		
+		
+		d3.json ("data.json", function (data) {
+		//variable  compteur ( a simplifier )
+		
+		var i = 0 ; // compteur 1
+		var j = 0 ; // compteur 2 
+		var k = 0 ; // compteur 3
+
+		var rayon = 10 ; // rayon des nodes ( correction des lines // en attendant mieux )
+		
+		
+		// variable de simplification de code 
+		var source = data.schema[0];
+		var cible = data.schema[1];
+		var ami_commun = data.schema[2];
+		
+		
+		//creation du node "source" et association du nom 
+		svg.append("circle")
+			.attr("cx",200)
+			.attr("cy",200)
+			.attr("r",rayon)
+			.style("fill","green")
+			.on("mouseover", ami);
+			
+		svg.append("text")
+			.attr("x",200-rayon)
+			.attr("y",200-rayon)
+			.text(function(d){return source.name});
+		
+		 
+		
+		//creation du node "cible" et association du nom 
+		
+		svg.append("circle")
+			.attr("cx",width -200)
+			.attr("cy",height -200)
+			.attr("r",rayon)
+			.style("fill","green")
+			.on("mousedown", friend);
+			
+			
+		svg.append("text")
+			.attr("x",width-200-rayon)
+			.attr("y",height- 200-rayon)
+			.text(function(d){return cible.name});
+		
+		//Creation des nodes "amis communs" et association de leur noms et de leur links
+		
+		for (i in ami_commun.ami)
+			{
+			svg.append("circle") //creation d'un node 
+				.attr("cx",400)  
+				.attr("cy", 25 + (i*50))
+				.attr("r",10)
+				.style("fill","red");
+			svg.append("text") //association d'un texte
+				.attr("x",400-rayon)
+				.attr("y",25+(i*50)-rayon)
+				.text(function(d){return ami_commun.ami[i].name}); //contenu du texte nom de l'ami du fichier json
+			svg.append("line") // creation d'une ligne du node de la source au node crée
+				.attr("x1",200+rayon)//x et y  du node source
+				.attr("y1",200)
+				.attr("x2",400-rayon) // x et y du node cree 
+				.attr("y2",25+(i*50))
+				.attr("stroke","grey"); 
+			svg.append("line") // creation d'une ligne du node de la cible  au node crée
+				.attr("x1",width-200-rayon) // x et y du node cible
+				.attr("y1",height-200)
+				.attr("x2",400+rayon) // x et y du node cree
+				.attr("y2",25+(i*50))
+				.attr("stroke","grey"); 
+			
+			}
+		
+		
+		// creation des nodes "ami" de source et association de leurs noms et de leur links 
+		function ami() {
+		for (i in source.ami)
+			{
+			k = 0 ; //recherche si l'ami est dans les amis communs 
+			
+				for( j in ami_commun.ami)
+				{
+				if (source.ami[i].id == ami_commun.ami[j].id)
+					{
+						k =1 ; // mise de k a 1 si l'ami est en commun 
+					}
+				}
+			if (k == 0 ) //creation d'une node et ses associations si l'ami n'est pas dans les amis communs
+				{
+				svg.append("circle")
+					.attr("cx",100)
+					.attr("cy", 25 + (i*50))
+					.attr("r",10)
+					.style("fill","blue");
+					
+				svg.append("text")
+					.attr("x",100-rayon)
+					.attr("y",25+(i*50)-rayon)
+					.text(function(d){return source.ami[i].name});
+				svg.append("line")
+					.attr("x1",200-rayon)//x et y du node de la source
+					.attr("y1",200)
+					.attr("x2",100+rayon) // x et y du node cree
+					.attr("y2",25+(i*50))
+					.attr("stroke","grey"); 
+				}					
+			}
+		}
+			
+		//	creation des nodes "ami" de la "cible" et association de leurs noms et de leur links
+			function friend() {
+				for (i in cible.ami)
+					{
+					k = 0 ; //recherche si l'ami est dans les amis communs 
+					
+						for( j in ami_commun.ami)
+						{
+							
+						if (cible.ami[i].id == ami_commun.ami[j].id)
+							{
+								k =1 ; // mise de k a 1 si l'ami est en commun 
+							}
+						}
+					if (k == 0 )  //creation d'une node et ses associations si l'ami n'est pas dans les amis communs
+						{
+						svg.append("circle")
+							.attr("cx",width-100)
+							.attr("cy", height -(25 + (i*50)))
+							.attr("r",10)
+							.style("fill","purple");
+						svg.append("text")
+							.attr("x",width-100-rayon)
+							.attr("y",height -(25 + (i*50))-rayon)
+							.text(function(d){return cible.ami[i].name});
+						svg.append("line")
+							.attr("x1",width-200+rayon)  // x et y du node de la cible 
+							.attr("y1",height-200)
+							.attr("x2",width-100-rayon) // x et y du node cree
+							.attr("y2",height-(25+(i*50)))
+							.attr("stroke","grey"); 
+						}	
+					}
+				}
+				function removefriend() {
+					
+				}			
+		});
+
+		
+			</script>
+		</div>
+	</body>
+</html>
