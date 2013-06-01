@@ -89,4 +89,16 @@ class Intersection
       'gender'                => $userData['gender']
     ));
   }
+  
+  /**
+  *
+  * Get All Users
+  * @return  array 
+  */
+  public static function getUsers()
+  {
+  	return IntersectionDAO::getFacebookUsers();
+  }
+  
+  
 }
