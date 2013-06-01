@@ -9,7 +9,7 @@ class Bdd{
 	
 	
   public function bddConnexion() {
-    require 'config.inc.php';
+    require 'config/config.inc.php';
     try{
       $this->dbh = new PDO($dsn, $db_user, $db_password);
     }catch (PDOException $e) {
