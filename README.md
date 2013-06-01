@@ -24,7 +24,3 @@ it helps to bring data to life using HTML, SVG and CSS.
 D3’s emphasis on web standards gives  a full capabilities of modern browsers 
 without tying yourself to a proprietary framework, combining powerful visualization 
 components and a data-driven approach to DOM manipulation. 
- 
-
-
-
