@@ -80,15 +80,15 @@ class IntersectionDAO
     }
     
     /**
-    * Get all Facebook users from database
-    *
-    * @return array
-    */
+     * Get all Facebook users from database
+     *
+     * @return array
+     */
     public static function getFacebookUsers()
     {
-    	$query = ("SELECT* FROM user ORDER BY last_name");
+    	$query = "SELECT * FROM user ORDER BY last_name, first_name";
     	
-    	return self::getInstance()->getPDO()->exec($query);
+    	return self::getInstance()->getPDO()->query($query)->fetchAll();
     }
     
 }

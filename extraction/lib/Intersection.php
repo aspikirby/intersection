@@ -91,14 +91,52 @@ class Intersection
   }
   
   /**
-  *
-  * Get All Users
-  * @return  array 
-  */
+   * Get All Users
+   *
+   * @return  array 
+   */
   public static function getUsers()
   {
   	return IntersectionDAO::getFacebookUsers();
   }
-  
-  
+
+  /**
+   * @param string $uid
+   * @param string $token
+   * @return string (url)
+   */
+  public static function getProfilApiUrl($uid, $token)
+  {
+    return sprintf("https://graph.facebook.com/%s?access_token=%s", $uid, $token);
+  }
+
+  /**
+   * @param string $uid
+   * @param string $token
+   * @return string (url)
+   */
+  public static function getFriendsApiUrl($uid, $token)
+  {
+    return sprintf("https://graph.facebook.com/%s/friends?access_token=%s", $uid, $token);
+  }
+
+  /**
+   * @param string $uid
+   * @param string $token
+   * @return string (url)
+   */
+  public static function getGroupsApiUrl($uid, $token)
+  {
+    return sprintf("https://graph.facebook.com/%s/groups?access_token=%s", $uid, $token);
+  }
+
+  /**
+   * @param string $uid
+   * @param string $token
+   * @return string (url)
+   */
+  public static function getEventsApiUrl($uid, $token)
+  {
+    return sprintf("https://graph.facebook.com/%s/events?access_token=%s", $uid, $token);
+  }
 }
