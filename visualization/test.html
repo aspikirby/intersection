@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="reset.css" />
+    </head>
+    <body>
+        <script type="text/javascript" src="d3.v3.js"></script>
+        <script type="text/javascript">
+            circleRadii = [200, 140, 20]
+             
+            var svgContainer = d3.select("body").append("svg")
+                                                 .attr("width", 800)
+                                                 .attr("height", 600)
+                                                 .style("border", "1px solid black");
+             
+            var circles = svgContainer.selectAll("circle")
+                                       .data(circleRadii)
+                                       .enter()
+                                      .append("circle")
+
+            var circleAttributes = circles
+                                   .attr("cx", 400)
+                                   .attr("cy", 300)
+                                   .attr("r", function (d) { return d; })
+                                   .style("fill", function(d, i) {
+                                     var returnColor;
+                                     if (i === 0) { returnColor = "green";
+                                     } else if (i === 1) { returnColor = "purple";
+                                     } else if (i === 2) { returnColor = "red"; }
+                                     return returnColor;
+                                   });
+        </script>
+    </body>
+</html>
