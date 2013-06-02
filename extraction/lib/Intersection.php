@@ -155,8 +155,9 @@ class Intersection
       $_user2 = $this->getFormatedUserData($user2['fb_user_id'], $user2['fb_access_token']);
 
       return json_encode(array(
-        'user1' => $_user1,
-        'user2' => $_user2,
+        'user1'   => $_user1,
+        'user2'   => $_user2,
+        'common'  => array()
       ));
   }
 
