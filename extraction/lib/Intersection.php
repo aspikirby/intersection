@@ -139,4 +139,14 @@ class Intersection
   {
     return sprintf("https://graph.facebook.com/%s/events?access_token=%s", $uid, $token);
   }
-}
+  
+  /**
+   * @param string $uid
+   *
+   * @return string $token
+   */
+  public function getUserToken($uid)
+  {
+    return IntersectionDAO::getUserToken($uid);
+  }
+
