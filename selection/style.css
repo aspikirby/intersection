@@ -1,0 +1,32 @@
+html, body {
+	height: 100%;
+}
+
+aside {
+	float: left;
+	height: 100%;
+	width: 300px;
+	padding: 0 5px;
+	background: #F0F0F0;
+	position: relative;
+}
+
+aside h1 {
+	background: url(images/logo.jpg) no-repeat 0 0;
+	padding-left: 110px;
+	height: 90px;
+	line-height: 90px;
+}
+
+aside h2 {
+	position: absolute;
+	top: 70px;
+	left: 116px;
+	color: #888;
+	font-size: 12px;
+}
+
+aside form {
+	margin-top: 50%;
+	vertical-align: center;
+}

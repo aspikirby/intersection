@@ -1,0 +1,46 @@
+html, body {
+    height: 100%;
+}
+
+aside {
+    float: left;
+    height: 100%;
+    width: 320px;
+    padding: 0 5px;
+    background: #F0F0F0;
+    position: relative;
+}
+
+aside .title {
+    margin: 10px 0;
+}
+
+aside h1 {
+    background: url('../images/logo.jpg') no-repeat 0 0;
+    padding-left: 110px;
+    height: 91px;
+    line-height: 70px;
+    font-size: 26px;
+}
+
+aside h2 {
+    position: absolute;
+    top: 60px;
+    left: 116px;
+    color: #888;
+    font-size: 11px;
+}
+
+aside form {
+    width: 220px;
+    margin: 30% auto 0;
+}
+
+aside form fieldset {
+    margin-top: 10px;
+}
+
+aside form input[type="submit"] {
+    display: block;
+    margin: 20px auto 0;
+}
