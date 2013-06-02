@@ -9,10 +9,8 @@ if(!$app->isUserConnected()) {
   include 'connect.php';
 } else {
   if(!$app->isUserKnown()) {
-    echo "add";
     $app->addNewUser();
   }
-  //TODO display user graph
-  echo "Notre jolie application lien avec visualisation";
+  include 'visualisation.php';
 }
 ?>
