@@ -1,4 +1,26 @@
 <!DOCTYPE html>
+
+<?php
+$output = false;
+if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])) {
+    $output = true;
+    require 'config/config.inc.php';
+    require 'lib/Intersection.php';
+
+    $app = new Intersection($fb_app_id , $fb_app_secret);
+
+    $user1 = array(
+        'fb_user_id' => $_GET['fb_user_1'],
+        'fb_access_token' => $app->getFacebookUserAccessToken($_GET['fb_user_1'])
+    );
+
+    $user2 = array(
+        'fb_user_id' => $_GET['fb_user_2'],
+        'fb_access_token' => $app->getFacebookUserAccessToken($_GET['fb_user_2'])
+    );
+}
+?>
+
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,10 +34,6 @@
         <title>Social graph</title>
     </head>
     <body>
-        <?php if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])): ?>
-            <?php var_dump($_GET['fb_user_1'], $_GET['fb_user_2']);die; ?>
-        <?php endif; ?>
-
         <aside>
             <div class="title">
                 <h1>INTERSECTION</h1>
@@ -37,7 +55,7 @@
 
                     $.getJSON("listuser.json.php")
                     .done(function(data) {
-                        var items = '';
+                        var items = '<option></option>';
 
                         $.each(data, function(key, val) {
                             items += '<option value="' + key + '">' + val + '</option>';
@@ -54,6 +72,12 @@
             </script>
         </aside>
 
-        <div id="output"></div>
+        <div id="output">
+            <?php if($output): ?>
+
+                <?php var_dump($app->getFormatedData($user1, $user2)); ?>
+
+            <?php endif; ?>
+        </div>
     </body>
 </html>

@@ -43,6 +43,17 @@ class Intersection
   }
 
   /**
+   * Get facebook user access token
+   *
+   * @param string $uid
+   * @return string $token
+   */
+  public function getFacebookUserAccessToken($uid)
+  {
+      return IntersectionDAO::getFacebookUserAccessToken($uid);
+  }
+
+  /**
    * Is Connected
    *
    * @return boolean true if user is connected
@@ -103,6 +114,77 @@ class Intersection
   /**
    * @param string $uid
    * @param string $token
+   * @return string
+   */
+  public function getProfilData($uid, $token)
+  {
+      return self::execUrl(self::getProfilApiUrl($uid, $token));
+  }
+
+  /**
+   * @param string $uid
+   * @param string $token
+   * @return string
+   */
+  public function getFriendsData($uid, $token)
+  {
+      return self::execUrl(self::getFriendsApiUrl($uid, $token));
+  }
+
+  /**
+   * @param string $uid
+   * @param string $token
+   * @return string
+   */
+  public function getFormatedUserData($uid, $token)
+  {
+      $profil = json_decode($this->getProfilData($uid, $token), true);
+      $friends = json_decode($this->getFriendsData($uid, $token), true);
+
+      return array_merge($profil, $friends);
+  }
+
+  /**
+   * @param array $user1
+   * @param array $user2
+   * @return string
+   */
+  public function getFormatedData($user1, $user2)
+  {
+      $_user1 = $this->getFormatedUserData($user1['fb_user_id'], $user1['fb_access_token']);
+      $_user2 = $this->getFormatedUserData($user2['fb_user_id'], $user2['fb_access_token']);
+
+      return json_encode(array(
+        'user1' => $_user1,
+        'user2' => $_user2,
+      ));
+  }
+
+  /**
+   * Execute a given url and return the response content
+   *
+   * @param string $url
+   * @return string the requested url page content;
+   */
+  public static function execUrl($url)
+  {
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $url);
+      curl_setopt($ch, CURLOPT_HEADER, 0);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      // Start buffering
+      //ob_start();
+      $data = curl_exec($ch);
+      // End buffering and clean output
+      //ob_end_clean(); 
+      curl_close($ch);
+
+      return $data;
+  }
+
+  /**
+   * @param string $uid
+   * @param string $token
    * @return string (url)
    */
   public static function getProfilApiUrl($uid, $token)
@@ -139,14 +221,4 @@ class Intersection
   {
     return sprintf("https://graph.facebook.com/%s/events?access_token=%s", $uid, $token);
   }
-  
-  /**
-   * @param string $uid
-   *
-   * @return string $token
-   */
-  public function getUserToken($uid)
-  {
-    return IntersectionDAO::getUserToken($uid);
-  }
-
+}

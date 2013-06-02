@@ -94,12 +94,15 @@ class IntersectionDAO
     /**
      * Get Facebook token's user from database
      *
+     * @param string $uid
      * @return string
      */
-     public static function getUserToken($uid)
-     {
-         $query = "SELECT facebook_access_token` FROM `user` WHERE `facebook_user_id` = " + $uid;
-         return self::getInstance()->getPDO()->query($query);
-     }
+    public static function getFacebookUserAccessToken($uid)
+    {
+        $query = sprintf("SELECT `facebook_access_token` FROM `user` WHERE `facebook_user_id` = '%s'", $uid);
+        $result = self::getInstance()->getPDO()->query($query)->fetch(PDO::FETCH_ASSOC);
+
+        return $result["facebook_access_token"];
+    }
 
 }    
