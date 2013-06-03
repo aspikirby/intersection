@@ -94,10 +94,11 @@ if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])) {
             
             /*-------creation du node de la source------- */
             
-            d3.json('<?php echo sprintf('formated_data.json.php?fb_user_1=%s&fb_user_2=1%s', $_GET['fb_user_1'], $_GET['fb_user_2']); ?>', function (data) {
+            d3.json('<?php echo sprintf('formated_data.json.php?fb_user_1=%s&fb_user_2=%s', $_GET['fb_user_1'], $_GET['fb_user_2']); ?>', function (data) {
             var k= 0 ; /*compteur de passage */
             var cheminGenreSource = data.user1.gender ; //chemin vers le genre de l'ami
             var cheminAmiSource = data.user1.data;
+			var cheminDonnéePersoSource = data.user1;
             
 			console.log(cheminGenreSource);
 			console.log(cheminAmiSource);
@@ -135,7 +136,12 @@ if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])) {
                 .attr("r",rayonNode)
                 .attr("fill",color(cheminGenreSource)); 
                 
-                
+			/* ajout du nom au node crée */
+			
+			svg.append("text")
+				.attr("x",width*1/4 - rayonNode)
+				.attr("y",height*1/2 + 2*rayonNode)
+				.text(function(d) {return cheminDonnéePersoSource.name});		
             
                 
             /*creation du node relatif au amis et du lien */
@@ -167,10 +173,10 @@ if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])) {
             
             /*----------------creation du node de la cible -------------------------*/
             
-            d3.json('<?php echo sprintf('formated_data.json.php?fb_user_1=%s&fb_user_2=1%s', $_GET['fb_user_1'], $_GET['fb_user_2']); ?>', function (data){
+            d3.json('<?php echo sprintf('formated_data.json.php?fb_user_1=%s&fb_user_2=%s', $_GET['fb_user_1'], $_GET['fb_user_2']); ?>', function (data){
             var cheminGenreCible = data.user2.gender;
             var cheminAmiCible = data.user2.data;
-			
+			var cheminDonnéePersoCible = data.user2;
 			
             var j= 0 ; /*compteur de passage */
             
@@ -199,12 +205,22 @@ if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])) {
                 
             };
             
+			
+			/*creation du node*/
+			
             svg.append("circle")
                 .attr("cx",width*3/4)
                 .attr("cy",height*1/2)
                 .attr("r",rayonNode)
                 .attr("fill",color(cheminGenreCible))
                 .attr("stroke","grey");
+			
+			svg.append("text")
+				.attr("x",width*3/4- rayonNode)
+				.attr("y",height*1/2+ 2*rayonNode)
+				.text(function(d) {return cheminDonnéePersoCible.name});	
+				
+				
             
             /*creation du node relatif au amis et du lien */
             
@@ -218,7 +234,7 @@ if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])) {
                 
                 /*affichage du nombre d'amis */
             svg.append("text")
-                .attr("x",width*7/8-rayonAmi(cheminAmiCible.length))
+                .attr("x",width*7/8-rayonAmi(cheminAmiCible.length)-10)
                 .attr("y",height*1/2-rayonAmi(cheminAmiCible.length))
                 .text(function (d) {return "Nombre d'ami: "+cheminAmiCible.length;});
                 
