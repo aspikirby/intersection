@@ -145,6 +145,8 @@ class Intersection
   }
 
   /**
+   * Get the data about user1 and user2  in json format
+   *
    * @param array $user1
    * @param array $user2
    * @return string
@@ -159,6 +161,39 @@ class Intersection
         'user2'   => $_user2,
         'common'  => array()
       ));
+  }
+
+  /**
+   * Get the data about user1 and user2 and their common friend in json format
+   *
+   * @param array $user1
+   * @param array $user2
+   * @return string
+   */
+  public function getDataAndCommon($user1, $user2) 
+  {
+	$_user1 = $this->getFormatedUserData($user1['fb_user_id'], $user1['fb_access_token']);
+    $_user2 = $this->getFormatedUserData($user2['fb_user_id'], $user2['fb_access_token']);
+	$_common = array(); 
+	$k = 0;
+	//loop to store id and name of the common friend 
+	for ($i=0; $i<count($_user1["data"]);$i++)
+	  {
+	    for ($j=0; $j<count($_user2["data"]);$j++)
+	      {
+			if ($_user1["data"][$i] == $_user2["data"][$j])
+			{
+				$_common[$k]=array ("name" =>$_user1["data"][$i]["name"],"id"=> $_user1["data"][$i]["id"]);
+				$k++;
+			}
+	      }
+	  }
+	
+     return json_encode(array(
+        'user1'   => $_user1,
+        'user2'   => $_user2,
+        'common'  => $_common
+	  ));
   }
 
   /**

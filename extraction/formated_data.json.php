@@ -17,6 +17,6 @@ if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])) {
         'fb_access_token' => $app->getFacebookUserAccessToken($_GET['fb_user_2'])
     );
 
-    echo $app->getFormatedData($user1, $user2);
+    echo $app->getDataAndCommon($user1, $user2);
 }
 ?>

@@ -65,11 +65,13 @@ if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])) {
         <script type="text/javascript" src="d3.v3.js"></script>
         <script type="text/javascript">
             
-            var width = 800; 
+/*-------------variables de configuration--------------------*/
+
+            var width = 800; //taille du svg 
             var height = 500;       
-            var nbrNode = 20 ; 
-            var rayonNode = (((height /nbrNode ) -1 ) /3);
-            var svg = d3.select("#output").append("svg").attr("width", width).attr("height", height); 
+            var nbrNode = 20 ; //nombre de node affichage a l'ecran 
+            var rayonNode = (((height /nbrNode ) -1 ) /3); //rayon des nodes automatiquement generé
+            var svg = d3.select("#output").append("svg").attr("width", width).attr("height", height); //creation du canevas
             /*fonction d'echelle pour avoir un rayon en fonction des amis=*/
             var scaleRayonAmiSmall = d3.scale.linear()
                     .domain([0, 140])
@@ -78,40 +80,40 @@ if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])) {
             var scaleRayonAmiBig = d3.scale.linear()
                     .domain([140, 5000])
                     .range([10, 30]);   
-            
-    
+                
             function rayonAmi(nbrAmi) { if ( nbrAmi >= 140) {return scaleRayonAmiSmall(nbrAmi);}else {return scaleRayonAmiBig (nbrAmi);}};
             
-
+	    /*fonction de generation de couleur en fonction du genre*/
             function color (varGender)  { if (varGender == "female") {return "pink";}else {return "blue"; }} ; 
             
+/*-------------fonction d'integration du json sur la page--------------------*/
 
+d3.json('<?php echo sprintf('formated_data.json.php?fb_user_1=%s&fb_user_2=%s', $_GET['fb_user_1'], $_GET['fb_user_2']); ?>', function (data) {
             
+/*-------------variables de chemin-----------------------------------------*/
+	
+		var cheminGenreSource = data.user1.gender ; //chemin vers le genre de l'ami source
+		var cheminAmiSource = data.user1.data; // chemin vers le tableau d'ami de la source
+		var cheminDonnéePersoSource = data.user1; // chemin vers les données perso de la source
+		var cheminGenreCible = data.user2.gender; // chemin vers le genre de la cible 
+		var cheminAmiCible = data.user2.data;// chemin vers le tableau d'ami de la cible
+		var cheminDonnéePersoCible = data.user2; // chemin vers les données perso de la source
+		var cheminAmisCommun = data.common; // chemin vers le tableau d'amis communs
+            	
             
-            /*d3.json("https://graph.facebook.com/559011579/friends?access_token=CAAET2OJzlxwBAErCE4SxABYsHTyshi5YxuekbH3KpF4w9qW9KyTksgcvB5lK4Nz9zUDn13FdsuYmG1VJdrMhvviK5zRaDtNv9ZAvkzPyTXPFXpgy0XcpJkzXlHiqMwhyGjmMhT0EyhaZBT79w3E2S9gfnNop0ZD", function (data) {
-            */
-            
-            
-            /*-------creation du node de la source------- */
-            
-            d3.json('<?php echo sprintf('formated_data.json.php?fb_user_1=%s&fb_user_2=%s', $_GET['fb_user_1'], $_GET['fb_user_2']); ?>', function (data) {
-            var k= 0 ; /*compteur de passage */
-            var cheminGenreSource = data.user1.gender ; //chemin vers le genre de l'ami
-            var cheminAmiSource = data.user1.data;
-			var cheminDonnéePersoSource = data.user1;
-            
-			console.log(cheminGenreSource);
-			console.log(cheminAmiSource);
-            
-                /*creation de la fonction pour afficher la liste des amis */
-            function affichageAmi() { 
-            if ( k==0 )
+/*----------creation de la fonction pour afficher la liste des amis---------- */
+
+		var k= 0 ; /*compteur de passage */
+	/*affichage de la liste des  amis de la source*/
+        
+		function affichageAmiSource() { 
+           if ( k==0 )
                 {
-                    svg.append("g")
+                   svg.append("g")
                         .attr("class","amisource")
-                        .selectAll(".amisource")
-                        .data(cheminAmiSource)
-                        .enter()
+                      .selectAll(".amisource")
+                       .data(cheminAmiSource)
+                       .enter()
                         .append("text")
                         .attr("x", 10)
                         .attr("y",function (d,i) {return rayonNode + i*  3 *rayonNode; })
@@ -128,60 +130,8 @@ if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])) {
                 
             };
 
-            
-            /*creation du node */
-            svg.append("circle")
-                .attr("cx",width*1/4)
-                .attr("cy",height*1/2)
-                .attr("r",rayonNode)
-                .attr("fill",color(cheminGenreSource)); 
-                
-			/* ajout du nom au node crée */
-			
-			svg.append("text")
-				.attr("x",width*1/4 - rayonNode)
-				.attr("y",height*1/2 + 2*rayonNode)
-				.text(function(d) {return cheminDonnéePersoSource.name});		
-            
-                
-            /*creation du node relatif au amis et du lien */
-            
-            svg.append("circle")
-                .attr("cx",width*1/8)
-                .attr("cy",height*1/2)
-                .attr("r",rayonAmi(cheminAmiSource.length))
-                .attr("fill","red")
-                .on("click",cheminAmiSource);
-                
-            
-                
-            svg.append("text")
-                .attr("x",width*1/8-rayonAmi(cheminAmiSource.length))
-                .attr("y",height*1/2-rayonAmi(cheminAmiSource.length))
-                .text(function (d) {return "Nombre d'ami: "+cheminAmiSource.length;})
-            
-            svg.append("line")  
-                .attr("x1",width*1/4) //source
-                .attr("y1",height*1/2)
-                .attr("x2",width*1/8)  //cible 
-                .attr("y2",height*1/2)
-                .attr("stroke","grey"); //couleur
-                
-    
-            
-            });
-            
-            /*----------------creation du node de la cible -------------------------*/
-            
-            d3.json('<?php echo sprintf('formated_data.json.php?fb_user_1=%s&fb_user_2=%s', $_GET['fb_user_1'], $_GET['fb_user_2']); ?>', function (data){
-            var cheminGenreCible = data.user2.gender;
-            var cheminAmiCible = data.user2.data;
-			var cheminDonnéePersoCible = data.user2;
-			
-            var j= 0 ; /*compteur de passage */
-            
-                /*creation de la fonction pour afficher la liste des amis */
-            function affichageAmi() { 
+          /*affichage de la liste des  amis de la source*/
+            function affichageAmiCible() { 
             if ( j==0 )
                 {
                     svg.append("g")
@@ -204,91 +154,134 @@ if(isset($_GET['fb_user_1']) && isset($_GET['fb_user_2'])) {
                 }
                 
             };
+
+ /*-------------------creation du node de la source--------------- */
             
+           	 /*creation du node */
+	svg.append("circle")
+                .attr("cx",width*1/4)
+                .attr("cy",height*1/2)
+                .attr("r",rayonNode)
+                .attr("fill",color(cheminGenreSource)); 
+                
+			/*ajout du nom au node crée */
 			
-			/*creation du node*/
+	svg.append("text")
+		.attr("x",width*1/4 - rayonNode)
+		.text(function(d) {return cheminDonnéePersoSource.name});		
+                 
+          	/*creation du node relatif au amis et du lien */
+            
+	svg.append("circle")
+                .attr("cx",width*1/8)
+                .attr("cy",height*1/2)
+                .attr("r",rayonAmi(cheminAmiSource.length))
+                .attr("fill","red")
+                .on("click",affichageAmiSource);
+  
+	svg.append("text")
+                .attr("x",width*1/8-rayonAmi(cheminAmiSource.length))
+                .attr("y",height*1/2-rayonAmi(cheminAmiSource.length))
+                .text(function (d) {return "Nombre d'ami: "+cheminAmiSource.length;})
+            
+	svg.append("line")  
+                .attr("x1",width*1/4) //source
+                .attr("y1",height*1/2)
+                .attr("x2",width*1/8)  //cible 
+                .attr("y2",height*1/2)
+                .attr("stroke","grey"); //couleur
+
+ /*----------------creation du node de la cible -------------------------*/
+  
+		var j= 0 ; /*compteur de passage */
+ 
+		/*creation du node*/
 			
-            svg.append("circle")
+	svg.append("circle")
                 .attr("cx",width*3/4)
                 .attr("cy",height*1/2)
                 .attr("r",rayonNode)
                 .attr("fill",color(cheminGenreCible))
                 .attr("stroke","grey");
 			
-			svg.append("text")
+	svg.append("text")
 				.attr("x",width*3/4- rayonNode)
 				.attr("y",height*1/2+ 2*rayonNode)
 				.text(function(d) {return cheminDonnéePersoCible.name});	
-				
-				
+
+		/*creation du node relatif au amis et du lien */
             
-            /*creation du node relatif au amis et du lien */
-            
-            svg.append("circle")
+	svg.append("circle")
                 .attr("cx",width*7/8)
                 .attr("cy",height*1/2)
                 .attr("r",rayonAmi(cheminAmiCible.length))
                 .attr("fill","red")
-                .on ("mousedown", affichageAmi);/*affichage de la liste d'amis sur un clic */
+                .on ("mousedown", affichageAmiCible);/*affichage de la liste d'amis sur un clic */
                 
-                
-                /*affichage du nombre d'amis */
-            svg.append("text")
+		/*affichage du nombre d'amis */
+		
+	svg.append("text")
                 .attr("x",width*7/8-rayonAmi(cheminAmiCible.length)-10)
                 .attr("y",height*1/2-rayonAmi(cheminAmiCible.length))
                 .text(function (d) {return "Nombre d'ami: "+cheminAmiCible.length;});
                 
-                
-            svg.append("line")  
+        /*affichage du lien */
+				
+	svg.append("line")  
                 .attr("x1",width*3/4) //source
                 .attr("y1",height*1/2)
                 .attr("x2",width*7/8)  //cible 
                 .attr("y2",height*1/2)
                 .attr("stroke","grey"); //couleur   
-                
-        
-            
-            });
 
-            /*--------- creation des nodes des amis en communs --------------------*/
-            /*
-            d3.json("data.json", function (data){
-            var cheminAmisCommun = data.schema[2].ami; 
-            //node
-            svg.selectAll()
+/*----------------creation des nodes des amis communs -------------------------*/
+        
+	/*creation des nodes*/
+	
+	svg.selectAll()
                 .data(cheminAmisCommun)
                 .enter()
                 .append("circle")
-                .attr("cy",function (d,i) {return rayonNode + i*  3 *rayonNode; })
+                .attr("cy",function (d,i) {  if (i%2 == 0 ){return  height/2+ rayonNode/2 +( 3*i/2*rayonNode); }else {return height/2-rayonNode/2 -( 3*i/2 *rayonNode);}})
                 .attr("cx",width*1/2)
-                .attr("fill","green") 
+                .attr("fill","orange") 
                 .attr("r",rayonNode);
             
-            
-            // lien node - source 
-            svg.selectAll()
+    /*creation des liens node - source*/
+	
+	svg.selectAll()
                 .data(cheminAmisCommun)
                 .enter()
                 .append("line")
-                .attr("y1",function (d,i) {return rayonNode + i*  3*rayonNode; }) //point 1 , le node nouvellement crée 
-                .attr("x1",width *1/2 )
+                .attr("cy",function (d,i) {  if (i%2 == 0 ){return  height/2+ rayonNode/2 +( 3*i/2*rayonNode); }else {return height/2-rayonNode/2 -( 3*i/2 *rayonNode);}})
+                .attr("x1",width *1/2 )// point 1 le node nouvelement crée
                 .attr("y2", height * 1/2 ) //point 2 la source
                 .attr("x2", width * 1/4 ) 
                 .attr("stroke","grey"); 
-            
-            
-            
-            // lien node - cible
-            svg.selectAll()
+
+	/*creation des liens node - cible*/
+			
+	svg.selectAll()
                 .data(cheminAmisCommun)
                 .enter()
                 .append("line")
-                .attr("y1",function (d,i) {return rayonNode + i*  3*rayonNode; }) //point 1 , le node nouvellement crée 
-                .attr("x1",width *1/2 )
+                .attr("cy",function (d,i) {  if (i%2 == 0 ){return  height/2+ rayonNode/2 +( 3*i/2*rayonNode); }else {return height/2-rayonNode/2 -( 3*i/2 *rayonNode);}})
+                .attr("x1",width *1/2 ) //point 1 , le node nouvellement crée 
                 .attr("y2", height * 1/2 ) //point 2 la cible
                 .attr("x2", width * 3/4) 
                 .attr("stroke","grey"); 
-            });*/
+
+	/*creation du texte*/
+
+	svg.selectAll()
+                .data(cheminAmisCommun)
+				.enter()
+				.append("text")
+				.attr("x",width*1/2 + rayonNode)
+				.attr("cy",function (d,i) {  if (i%2 == 0 ){return  height/2+ rayonNode/2 +( 3*i/2*rayonNode); }else {return height/2-rayonNode/2 -( 3*i/2 *rayonNode);}})
+				.text(function(d) {return d.name});
+
+	});	
 
         </script>
 
