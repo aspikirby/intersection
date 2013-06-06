@@ -168,6 +168,7 @@ d3.json('<?php echo sprintf('formated_data.json.php?fb_user_1=%s&fb_user_2=%s', 
 			
 	svg.append("text")
 		.attr("x",width*1/4 - rayonNode)
+		.attr("y",height*1/2+ 2*rayonNode)
 		.text(function(d) {return cheminDonnéePersoSource.name});		
                  
           	/*creation du node relatif au amis et du lien */
@@ -253,7 +254,7 @@ d3.json('<?php echo sprintf('formated_data.json.php?fb_user_1=%s&fb_user_2=%s', 
                 .data(cheminAmisCommun)
                 .enter()
                 .append("line")
-                .attr("cy",function (d,i) {  if (i%2 == 0 ){return  height/2+ rayonNode/2 +( 3*i/2*rayonNode); }else {return height/2-rayonNode/2 -( 3*i/2 *rayonNode);}})
+                .attr("y1",function (d,i) {  if (i%2 == 0 ){return  height/2+ rayonNode/2 +( 3*i/2*rayonNode); }else {return height/2-rayonNode/2 -( 3*i/2 *rayonNode);}})
                 .attr("x1",width *1/2 )// point 1 le node nouvelement crée
                 .attr("y2", height * 1/2 ) //point 2 la source
                 .attr("x2", width * 1/4 ) 
@@ -265,7 +266,7 @@ d3.json('<?php echo sprintf('formated_data.json.php?fb_user_1=%s&fb_user_2=%s', 
                 .data(cheminAmisCommun)
                 .enter()
                 .append("line")
-                .attr("cy",function (d,i) {  if (i%2 == 0 ){return  height/2+ rayonNode/2 +( 3*i/2*rayonNode); }else {return height/2-rayonNode/2 -( 3*i/2 *rayonNode);}})
+                .attr("y1",function (d,i) {  if (i%2 == 0 ){return  height/2+ rayonNode/2 +( 3*i/2*rayonNode); }else {return height/2-rayonNode/2 -( 3*i/2 *rayonNode);}})
                 .attr("x1",width *1/2 ) //point 1 , le node nouvellement crée 
                 .attr("y2", height * 1/2 ) //point 2 la cible
                 .attr("x2", width * 3/4) 
@@ -278,7 +279,7 @@ d3.json('<?php echo sprintf('formated_data.json.php?fb_user_1=%s&fb_user_2=%s', 
 				.enter()
 				.append("text")
 				.attr("x",width*1/2 + rayonNode)
-				.attr("cy",function (d,i) {  if (i%2 == 0 ){return  height/2+ rayonNode/2 +( 3*i/2*rayonNode); }else {return height/2-rayonNode/2 -( 3*i/2 *rayonNode);}})
+				.attr("y",function (d,i) {  if (i%2 == 0 ){return  height/2+ rayonNode/2 +( 3*i/2*rayonNode); }else {return height/2-rayonNode/2 -( 3*i/2 *rayonNode);}})
 				.text(function(d) {return d.name});
 
 	});	

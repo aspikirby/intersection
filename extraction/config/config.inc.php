@@ -2,7 +2,7 @@
 
 /* Database parameters */
 $db_host = 'localhost';
-$db_user = 'intersection';
+$db_user = 'root';
 $db_password ='aspirateur';
 $db_port = 3306;
 $db_name = 'intersection';
